@@ -15,11 +15,27 @@ Our main contributions are:
 
 # How to use this code
 
+The Demo notebook is preconfigured with a set of tasks: ```['12cmd', 'leftright', '35word', '20cmd']```. Each of these refer to how many commands should be recognized by the model. When loading the Google Speech Dataset, the user should also select which version to download and use by adjusting the following line:
+
+```gscInfo, nCategs = SpeechDownloader.PrepareGoogleSpeechCmd(version=1, task = '35word')```
+
 ## Cloning this repository
 
-## Using Colab
+- Download or clone this repository;
+- Open the Demo notebook;
+- Choose how many words should be recognized and the Google Speech Dataset version to use;
+- Run training and tests.
+
+## Using Google Colab
 
 Google Colaboratory is an amazing tool for experimentation using a Jupyter Notebook environment with GPUs.
+
+- Open Colab: https://colab.research.google.com/ ;
+- Download and upload the notebood Speech_Recog_Demo.ipynb to Colab, then open it;
+- Enable GPU acceleration in menu Edit -> Notebook settings;
+- Set useColab = True;
+- Choose how many words should be recognized and the Google Speech Dataset version to use;
+- Run training and tests.
 
 ## Train with your own data
 
