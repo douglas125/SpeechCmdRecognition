@@ -1,8 +1,6 @@
-# SpeechCmdRecognition
+# Speech Command Recognition
 
-Speech Command Recognition
-
-A Keras implementation of neural attention model for speech command recognition
+## A Keras implementation of neural attention model for speech command recognition
 
 This repository presents a recurrent attention model designed to identify keywords in short segments of audio. It has been tested using the Google Speech Command Datasets (v1 and v2).
 For a complete description of the architecture, please refer to [our paper](https://arxiv.org/abs/1808.08929).
@@ -25,8 +23,9 @@ Google Colaboratory is an amazing tool for experimentation using a Jupyter Noteb
 
 ## Train with your own data
 
+# Final Words
 
-If this code is useful for you, please cite our work:
+If you find this code useful, please cite our work:
 
 ```
 @ARTICLE{2018arXiv180808929C,
