@@ -43,7 +43,17 @@ Google Colaboratory is an amazing tool for experimentation using a Jupyter Noteb
 
 ## Train with your own data
 
+If you want to train with your own data:
+
+- Use the ```audioUtily.py WAV2Numpy``` function to save your WAV files in numpy format. This speeds up loading considerably;
+- Create a ```list_IDs``` array containing the paths to all the numpy files and a ```labels``` array with corresponding labels (already converted to integers);
+- Instantiate a ```SpeechGenerator.py SpeechGen``` class;
+- Create your own Keras model for audio classification or use one provided in ```SpeechModels.py```;
+- Train the model.
+
 # Final Words
+
+We would like to thank Google for making such a great speech dataset available for public use and for making Colab available.
 
 If you find this code useful, please cite our work:
 
