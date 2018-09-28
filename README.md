@@ -53,7 +53,7 @@ If you want to train with your own data:
 
 # Final Words
 
-We would like to thank Google for making such a great speech dataset available for public use and for making Colab available.
+We would like to thank Google for making such a great speech dataset available for public use, for making Colab available and for hosting the Kaggle competition Tensorflow Speech Recognition Challenge.
 
 If you find this code useful, please cite our work:
 
