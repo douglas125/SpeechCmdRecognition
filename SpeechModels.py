@@ -104,12 +104,12 @@ def RNNSpeechModel(nCategories, samplingrate = 16000, inputLength = 16000):
     return model
 
 
-def AttRNNSpeechModel(nCategories, samplingrate = 16000, inputLength = 16000):
+def AttRNNSpeechModel(nCategories, samplingrate = 16000, inputLength = 16000, rnn_func = CuDNNLSTM):
     #simple LSTM
     sr = samplingrate
     iLen = inputLength
     
-    inputs = Input((sr,))
+    inputs = Input((inputLength,), name='input')
 
     x = Reshape((1, -1)) (inputs)
 
@@ -135,8 +135,8 @@ def AttRNNSpeechModel(nCategories, samplingrate = 16000, inputLength = 16000):
     #x = Reshape((125, 80)) (x)
     x = Lambda(lambda q: K.squeeze(q, -1), name='squeeze_last_dim') (x) #keras.backend.squeeze(x, axis)
 
-    x = Bidirectional(CuDNNLSTM(64, return_sequences = True)) (x) # [b_s, seq_len, vec_dim]
-    x = Bidirectional(CuDNNLSTM(64, return_sequences = True)) (x) # [b_s, seq_len, vec_dim]
+    x = Bidirectional(rnn_func(64, return_sequences = True)) (x) # [b_s, seq_len, vec_dim]
+    x = Bidirectional(rnn_func(64, return_sequences = True)) (x) # [b_s, seq_len, vec_dim]
 
     xFirst = Lambda(lambda q: q[:,64]) (x) #[b_s, vec_dim]
     query = Dense(128) (xFirst)

@@ -24,7 +24,7 @@ def plot_confusion_matrix(cm, classes,
 
     #print(cm)
 
-    plt.figure(figsize=(25,25))
+    plt.figure(figsize=(15,15))
     plt.imshow(cm, interpolation='nearest', cmap=cmap)
     plt.title(title, fontsize=30)
     plt.colorbar()
