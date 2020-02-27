@@ -22,8 +22,6 @@ def plot_confusion_matrix(cm, classes,
     else:
         print('Confusion matrix, without normalization')
 
-    #print(cm)
-
     plt.figure(figsize=(15,15))
     plt.imshow(cm, interpolation='nearest', cmap=cmap)
     plt.title(title, fontsize=30)
@@ -57,8 +55,8 @@ def WAV2Numpy(folder, sr = None):
     for file in tqdm(allFiles):
         y, sr = librosa.load(file, sr=None)
         
-        #if we want to write the file later
-        #librosa.output.write_wav('file.wav', y, sr, norm=False)
+        # if we want to write the file later
+        # librosa.output.write_wav('file.wav', y, sr, norm=False)
         
-        np.save(file+'.npy', y)
+        np.save(file + '.npy', y)
         os.remove(file)

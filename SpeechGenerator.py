@@ -13,9 +13,9 @@ model.fit_generator(generator=training_generator,
 """
 
 import numpy as np
-import keras
+import tensorflow.keras
 
-class SpeechGen(keras.utils.Sequence):
+class SpeechGen(tensorflow.keras.utils.Sequence):
     """
     'Generates data for Keras'
     
@@ -64,28 +64,28 @@ class SpeechGen(keras.utils.Sequence):
         
         # Generate data
         for i, ID in enumerate(list_IDs_temp):
-            
-            #load data from file, saved as numpy array on disk
+
+            # load data from file, saved as numpy array on disk
             curX = np.load(ID)
-            
-            #normalize
-            #invMax = 1/(np.max(np.abs(curX))+1e-3)
-            #curX *= invMax            
-            
-            #curX could be bigger or smaller than self.dim
+
+            # normalize
+            # invMax = 1/(np.max(np.abs(curX))+1e-3)
+            # curX *= invMax            
+
+            # curX could be bigger or smaller than self.dim
             if curX.shape[0] == self.dim:
                 X[i] = curX
-                #print('Same dim')
+                # print('Same dim')
             elif curX.shape[0] > self.dim: #bigger
-                #we can choose any position in curX-self.dim
+                # we can choose any position in curX-self.dim
                 randPos = np.random.randint(curX.shape[0]-self.dim)
                 X[i] = curX[randPos:randPos+self.dim]
-                #print('File dim bigger')
-            else: #smaller
+                # print('File dim bigger')
+            else: # smaller
                 randPos = np.random.randint(self.dim-curX.shape[0])
                 X[i,randPos:randPos+curX.shape[0]] = curX
-                #print('File dim smaller')
-            
+                # print('File dim smaller')
+
             # Store class
             y[i] = self.labels[ID]
 
