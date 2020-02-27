@@ -9,22 +9,25 @@ model.fit_generator(generator=training_generator,
                     validation_data=validation_generator,
                     use_multiprocessing=True,
                     workers=6)
-                    
+
 """
 
 import numpy as np
 import tensorflow.keras
 
+
 class SpeechGen(tensorflow.keras.utils.Sequence):
     """
     'Generates data for Keras'
-    
+
     list_IDs - list of files that this generator should load
-    labels - dictionary of corresponding (integer) category to each file in list_IDs
-    
+    labels - dictionary of corresponding (integer) category
+    to each file in list_IDs
+
     Expects list_IDs and labels to be of the same length
     """
-    def __init__(self, list_IDs, labels, batch_size=64, dim=16000, shuffle=True):
+    def __init__(self, list_IDs, labels, batch_size=32,
+                 dim=16000, shuffle=True):
         'Initialization'
         self.dim = dim
         self.batch_size = batch_size
@@ -53,15 +56,16 @@ class SpeechGen(tensorflow.keras.utils.Sequence):
     def on_epoch_end(self):
         'Updates indexes after each epoch'
         self.indexes = np.arange(len(self.list_IDs))
-        if self.shuffle == True:
+        if self.shuffle:
             np.random.shuffle(self.indexes)
 
     def __data_generation(self, list_IDs_temp):
-        'Generates data containing batch_size samples' # X : (n_samples, *dim, n_channels)
+        'Generates data containing batch_size samples'
+        # X : (n_samples, *dim, n_channels)
         # Initialization
         X = np.empty((self.batch_size, self.dim))
         y = np.empty((self.batch_size), dtype=int)
-        
+
         # Generate data
         for i, ID in enumerate(list_IDs_temp):
 
@@ -70,20 +74,18 @@ class SpeechGen(tensorflow.keras.utils.Sequence):
 
             # normalize
             # invMax = 1/(np.max(np.abs(curX))+1e-3)
-            # curX *= invMax            
+            # curX *= invMax
 
             # curX could be bigger or smaller than self.dim
             if curX.shape[0] == self.dim:
                 X[i] = curX
-                # print('Same dim')
-            elif curX.shape[0] > self.dim: #bigger
+            elif curX.shape[0] > self.dim:  # bigger
                 # we can choose any position in curX-self.dim
                 randPos = np.random.randint(curX.shape[0]-self.dim)
                 X[i] = curX[randPos:randPos+self.dim]
-                # print('File dim bigger')
-            else: # smaller
+            else:  # smaller
                 randPos = np.random.randint(self.dim-curX.shape[0])
-                X[i,randPos:randPos+curX.shape[0]] = curX
+                X[i, randPos:randPos + curX.shape[0]] = curX
                 # print('File dim smaller')
 
             # Store class

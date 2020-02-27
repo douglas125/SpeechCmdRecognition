@@ -8,6 +8,7 @@ import numpy as np
 import matplotlib.pyplot as plt
 import itertools
 
+
 def plot_confusion_matrix(cm, classes,
                           normalize=False,
                           title='Confusion matrix',
@@ -22,7 +23,7 @@ def plot_confusion_matrix(cm, classes,
     else:
         print('Confusion matrix, without normalization')
 
-    plt.figure(figsize=(15,15))
+    plt.figure(figsize=(15, 15))
     plt.imshow(cm, interpolation='nearest', cmap=cmap)
     plt.title(title, fontsize=30)
     plt.colorbar()
@@ -39,24 +40,26 @@ def plot_confusion_matrix(cm, classes,
 
     plt.ylabel('True label', fontsize=30)
     plt.xlabel('Predicted label', fontsize=30)
-    plt.savefig('picConfMatrix.png', dpi = 400)
+    plt.savefig('picConfMatrix.png', dpi=400)
     plt.tight_layout()
 
-def WAV2Numpy(folder, sr = None):
+
+def WAV2Numpy(folder, sr=None):
     """
-    Recursively converts WAV to numpy arrays. Deletes the WAV files in the process
-    
+    Recursively converts WAV to numpy arrays.
+    Deletes the WAV files in the process
+
     folder - folder to convert.
     """
     allFiles = []
     for root, dirs, files in os.walk(folder):
-        allFiles += [os.path.join(root, f) for f in files if f.endswith('.wav')]
+        allFiles += [os.path.join(root, f) for f in files
+                     if f.endswith('.wav')]
 
     for file in tqdm(allFiles):
         y, sr = librosa.load(file, sr=None)
-        
+
         # if we want to write the file later
         # librosa.output.write_wav('file.wav', y, sr, norm=False)
-        
         np.save(file + '.npy', y)
         os.remove(file)
