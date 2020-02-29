@@ -1,7 +1,6 @@
-tensorflow==2
-kapre==0.1.7
-pandas==0.25
-librosa==0.6
+tensorflow>=2
+kapre>=0.1.7
+pandas>=0.25
+librosa>=0.6
 tqdm
-soundfile==0.10
 matplotlib

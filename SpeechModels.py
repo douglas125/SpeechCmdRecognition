@@ -116,14 +116,17 @@ def AttRNNSpeechModel(nCategories, samplingrate=16000,
 
     x = L.Reshape((1, -1))(inputs)
 
-    x = Melspectrogram(n_dft=1024, n_hop=128, input_shape=(1, iLen),
+    m = Melspectrogram(n_dft=1024, n_hop=128, input_shape=(1, iLen),
                        padding='same', sr=sr, n_mels=80,
                        fmin=40.0, fmax=sr / 2, power_melgram=1.0,
                        return_decibel_melgram=True, trainable_fb=False,
                        trainable_kernel=False,
-                       name='mel_stft')(x)
+                       name='mel_stft')
+    m.trainable = False
 
-    x = Normalization2D(int_axis=0)(x)
+    x = m(x)
+
+    x = Normalization2D(int_axis=0, name='mel_stft_norm')(x)
 
     # note that Melspectrogram puts the sequence in shape (batch_size, melDim, timeSteps, 1)
     # we would rather have it the other way around for LSTMs
