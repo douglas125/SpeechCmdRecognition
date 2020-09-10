@@ -1,6 +1,6 @@
 tensorflow>=2
 kapre==0.2
 pandas>=0.25
-librosa>=0.6
+librosa>=0.8
 tqdm
 matplotlib
