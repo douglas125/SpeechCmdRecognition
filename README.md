@@ -23,6 +23,8 @@ The Demo notebook is preconfigured with a set of tasks: ```['12cmd', 'leftright'
 
 ```gscInfo, nCategs = SpeechDownloader.PrepareGoogleSpeechCmd(version=1, task = '35word')```
 
+If you want a pretrained model, `model-attRNN.h5` contains pre-trained weights for task 35word, version=2.
+
 ## Cloning this repository
 
 - Download or clone this repository;
