@@ -141,21 +141,28 @@ def AttRNNSpeechModel(nCategories, samplingrate=16000,
     # x = Reshape((125, 80)) (x)
     # keras.backend.squeeze(x, axis)
     x = L.Lambda(lambda q: K.squeeze(q, -1), name='squeeze_last_dim')(x)
+    # x.shape = [batch_size, 128, 80]
 
+    # 双向LSTM，输出节点为64*2
     x = L.Bidirectional(rnn_func(64, return_sequences=True)
-                        )(x)  # [b_s, seq_len, vec_dim]
+                        )(x)  # [b_s, seq_len, vec_dim] [b_s, 128, 64*2]
     x = L.Bidirectional(rnn_func(64, return_sequences=True)
-                        )(x)  # [b_s, seq_len, vec_dim]
+                        )(x)  # [b_s, seq_len, vec_dim] [b_s, 128, 64*2]
 
-    xFirst = L.Lambda(lambda q: q[:, -1])(x)  # [b_s, vec_dim]
-    query = L.Dense(128)(xFirst)
+    # 将每个音频的的最后一个seq的输出取出
+    xFirst = L.Lambda(lambda q: q[:, -1])(x)  # [b_s, vec_dim] [b_s, 64*2]
+    # 最后一个seq的输出经过dense后得到query，这里的含义是把最后一个seq的输出作为了一个参考值，认为它最靠近真实结果
+    query = L.Dense(128)(xFirst) # [b_s, 128]
 
     # dot product attention
-    attScores = L.Dot(axes=[1, 2])([query, x])
-    attScores = L.Softmax(name='attSoftmax')(attScores)  # [b_s, seq_len]
+    # 将query与每一个seq的输出进行dot，即计算query与每个seq输出的相似度，得到每一帧的注意力得分attScores
+    attScores = L.Dot(axes=[1, 2])([query, x]) # attScores.shape = [b_s, seq_len] [b_s, 128]
+    # 对attScores进行softmax，得到每一个seq的权重
+    attScores = L.Softmax(name='attSoftmax')(attScores)  # [b_s, seq_len] [b_s, 128]
 
     # rescale sequence
-    attVector = L.Dot(axes=[1, 1])([attScores, x])  # [b_s, vec_dim]
+    # 将每一个seq的注意力权重和每一个输出维度的所有seq的值进行dot，得到一个注意力向量attVector，这一句是融合所有seq的输出，得到最终输出
+    attVector = L.Dot(axes=[1, 1])([attScores, x])  # [b_s, vec_dim] [b_s, 64*2]
 
     x = L.Dense(64, activation='relu')(attVector)
     x = L.Dense(32)(x)
