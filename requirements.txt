@@ -1,4 +1,4 @@
-tensorflow==2.10
+tensorflow==2.10.1
 pandas>=0.25
 tqdm
 librosa
