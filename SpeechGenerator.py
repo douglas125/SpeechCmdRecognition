@@ -70,7 +70,7 @@ class SpeechGen(tensorflow.keras.utils.Sequence):
         for i, ID in enumerate(list_IDs_temp):
 
             # load data from file, saved as numpy array on disk
-            curX = np.load(ID)
+            curX = np.load(ID)[:, 0]
 
             # normalize
             # invMax = 1/(np.max(np.abs(curX))+1e-3)
