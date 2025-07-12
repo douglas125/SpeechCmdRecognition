@@ -19,6 +19,37 @@ One usual problem with deep learning models is that they are usually "black-box"
 
 # How to use this code
 
+## Command line
+
+Install the requirements (on Windows you will need Python 3.8 for the Tensorflow version).
+
+Run
+
+```
+python recognize_word.py word_eight.wav word_follow.wav word_five.wav
+```
+
+The result should be:
+
+```
+==================================================
+RECOGNITION SUMMARY
+==================================================
+File: word_eight.wav
+  Predicted: eight
+  Confidence: 1.0000
+
+File: word_follow.wav
+  Predicted: follow
+  Confidence: 0.9998
+
+File: word_five.wav
+  Predicted: five
+  Confidence: 0.9997
+```
+
+## Demo Notebook
+
 The Demo notebook is preconfigured with a set of tasks: ```['12cmd', 'leftright', '35word', '20cmd']```. Each of these refer to how many commands should be recognized by the model. When loading the Google Speech Dataset, the user should also select which version to download and use by adjusting the following line:
 
 ```gscInfo, nCategs = SpeechDownloader.PrepareGoogleSpeechCmd(version=1, task = '35word')```
